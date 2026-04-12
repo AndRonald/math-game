@@ -7,6 +7,6 @@ namespace ConsoleApp1.Models
         public int Id { get; set; }
         public int Corrects { get; set; }
         public int Erros { get; set; }
-        public List<string> previousAccountSafekeeping { get; set; } = new List<string>();
+        public List<string> PreviousAccountSafekeeping { get; set; } = new List<string>();
     }
 }
