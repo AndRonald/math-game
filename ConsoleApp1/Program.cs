@@ -1,5 +1,6 @@
 ﻿using System;
 using ConsoleApp1.Models;
+using ConsoleApp1.Entities;
 
 namespace ConsoleApp1
 {
@@ -8,12 +9,10 @@ namespace ConsoleApp1
         public static void Main(string[] args)
         {
             Random random = new Random();
-
-            int correctAnswer = 0;
-            int wrongAnswer = 0;
-
-
             var resultOfTheSum = new ResultModel();
+            var resultOfTheSubtraction = new ResultModel();
+            var resultOfTheMultiplication = new ResultModel();
+            var resultOfTheDivision = new ResultModel();
 
             int validationExit = 1;
             do
@@ -30,34 +29,31 @@ namespace ConsoleApp1
                         {
                             int numberOne = random.Next(1, 100);
                             int numberTwo = random.Next(1, 100);
-                            Somar(numberOne, numberTwo);
                             Console.Write($"{numberOne}+{numberTwo}: ");
-                            int result = int.Parse(Console.ReadLine()!);
 
-                            if (result == Somar(numberOne, numberTwo))
+                            if (int.TryParse(Console.ReadLine(), out int result))
                             {
-                                resultOfTheSum.previousAccountSafekeeping.Add($"{numberOne} + {numberTwo}: {result}");
-                                resultOfTheSum.Corrects += 1;
+                                if (result == Operations.Addition(numberOne, numberTwo))
+                                    resultOfTheSum.Corrects += 1;
+                                else
+                                    resultOfTheSum.Erros += 1;
+
+                                resultOfTheSum.PreviousAccountSafekeeping.Add($"{numberOne} + {numberTwo}: {result}");
                             }
                             else
-                            {
-                                resultOfTheSum.previousAccountSafekeeping.Add($"{numberOne} + {numberTwo}: {result}");
-                                resultOfTheSum.Erros += 1;
-                            }
+                                Console.WriteLine("Invalid input");
                         }
-
-                        Console.WriteLine("after leaving, errors will be counted");
-                        Console.WriteLine();
+                        Console.WriteLine($"Result soma:\nCorrect: {resultOfTheSum.Corrects}\nErrors: {resultOfTheSum.Erros}");
                         break;
 
                     case 2:
                         Console.Clear();
-                        if (!(resultOfTheSum.previousAccountSafekeeping.Count == 0))
+                        if (!(resultOfTheSum.PreviousAccountSafekeeping.Count == 0))
                         {
-                            Console.WriteLine("Outcome of the questions: ");
-                            for (int i = 0; i < resultOfTheSum.previousAccountSafekeeping.Count; i++)
+                            Console.WriteLine("Outcome of the questions (SUM): ");
+                            for (int i = 0; i < resultOfTheSum.PreviousAccountSafekeeping.Count; i++)
                             {
-                                Console.WriteLine($"{i}: {resultOfTheSum.previousAccountSafekeeping[i]}");
+                                Console.WriteLine($"{i}: {resultOfTheSum.PreviousAccountSafekeeping[i]}");
                             }
                         }
                         else
@@ -65,7 +61,116 @@ namespace ConsoleApp1
                         break;
 
                     case 3:
-                        throw new NotImplementedException();
+                        Console.WriteLine();
+                        for (int i = 0; i < 5; i++)
+                        {
+                            int numberOne = random.Next(1, 100);
+                            int numberTwo = random.Next(1, 100);
+                            Console.Write($"{numberOne}-{numberTwo}: ");
+
+                            if (int.TryParse(Console.ReadLine(), out int result))
+                            {
+                                if (result == Operations.Subtraction(numberOne, numberTwo))
+                                    resultOfTheSubtraction.Corrects += 1;
+                                else
+                                    resultOfTheSubtraction.Erros += 1;
+
+                                resultOfTheSubtraction.PreviousAccountSafekeeping.Add($"{numberOne} - {numberTwo}: {result}");
+                            }
+                            else
+                                Console.WriteLine("Invalid input");
+                        }
+                        Console.WriteLine($"Result subtração:\nCorrect: {resultOfTheSubtraction.Corrects}\nErrors: {resultOfTheSubtraction.Erros}");
+                        break;
+                    case 4:
+                        Console.Clear();
+                        if (!(resultOfTheSubtraction.PreviousAccountSafekeeping.Count == 0))
+                        {
+                            Console.WriteLine("Outcome of the questions (SUBTRACT): ");
+                            for (int i = 0; i < resultOfTheSubtraction.PreviousAccountSafekeeping.Count; i++)
+                            {
+                                Console.WriteLine($"{i}: {resultOfTheSubtraction.PreviousAccountSafekeeping[i]}");
+                            }
+
+                        }
+
+                        else
+                            Console.WriteLine("Não há registros de resultados");
+                        break;
+                    case 5:
+                        Console.WriteLine();
+                        for (int i = 0; i < 5; i++)
+                        {
+                            int numberOne = random.Next(1, 100);
+                            int numberTwo = random.Next(1, 100);
+                            Console.WriteLine($"{numberOne} x {numberTwo}: ");
+
+                            if (int.TryParse(Console.ReadLine(), out int result))
+                            {
+                                if (result == Operations.Multiplication(numberOne, numberTwo))
+                                    resultOfTheMultiplication.Corrects += 1;
+                                else
+                                    resultOfTheMultiplication.Erros += 1;
+
+                                resultOfTheMultiplication.PreviousAccountSafekeeping.Add($"{numberOne} x {numberTwo}: {result}");
+                            }
+                            else
+                                Console.WriteLine("Invalid input");
+                        }
+                        Console.WriteLine($"Result multiplication:\nCorrect: {resultOfTheMultiplication.Corrects}\nErrors: {resultOfTheMultiplication.Erros}");
+                        break;
+                    case 6:
+                        Console.Clear();
+                        if (!(resultOfTheMultiplication.PreviousAccountSafekeeping.Count == 0))
+                        {
+                            Console.WriteLine("Outcome of the question (MULTIPLICATION)");
+                            for (int i = 0; i < resultOfTheMultiplication.PreviousAccountSafekeeping.Count; i++)
+                            {
+                                Console.WriteLine($"{i}: {resultOfTheMultiplication.PreviousAccountSafekeeping[i]}");
+                            }
+                        }
+                        else
+                            Console.WriteLine("Não há registros de resultados");
+                        break;
+                    case 7:
+                        Console.WriteLine();
+                        for (int i = 0; i < 5; i++)
+                        {
+                            int numberOne, numberTwo;
+                            do
+                            {
+                                numberOne = random.Next(1, 100);
+                                numberTwo = random.Next(1, 100);
+                            }
+                            while (numberOne % numberTwo != 0);
+                            Console.WriteLine($"{numberOne} / {numberTwo}: ");
+                            if (int.TryParse(Console.ReadLine(), out int result))
+                            {
+                                if (result == Operations.Division(numberOne, numberTwo))
+                                    resultOfTheDivision.Corrects += 1;
+                                else
+                                    resultOfTheDivision.Erros += 1;
+
+                                resultOfTheDivision.PreviousAccountSafekeeping.Add($"{numberOne} / {numberTwo}: {result}");
+                            }
+                            else
+                                Console.WriteLine("Invalid input");
+                        }
+                        Console.WriteLine($"Result division:\nCorrect: {resultOfTheDivision.Corrects}\nErrors: {resultOfTheDivision.Erros}");
+                        break;
+                    case 8:
+                        Console.Clear();
+                        if (!(resultOfTheDivision.PreviousAccountSafekeeping.Count == 0))
+                        {
+                            Console.WriteLine("Outcome of the question (DIVISION)");
+                            for (int i = 0; i < resultOfTheDivision.PreviousAccountSafekeeping.Count; i++)
+                            {
+                                Console.WriteLine($"{i}: {resultOfTheDivision.PreviousAccountSafekeeping[i]}");
+                            }
+                        }
+                        else
+                            Console.WriteLine("Não há registros de resultados");
+                        break;
                     default:
                         if (validationExit != 0)
                             Console.WriteLine("Invalid option, try again.");
@@ -73,77 +178,35 @@ namespace ConsoleApp1
                 }
             }
             while (validationExit != 0);
-
-            Console.WriteLine($"Result soma:\nCorrect: {resultOfTheSum.Corrects}\nErrors: {resultOfTheSum.Erros}");
         }
 
         public static void Painel()
         {
-            Console.WriteLine("select an option:");
-            Console.WriteLine("----------------------");
-            Console.WriteLine("1 - to add");
-            Console.WriteLine("2 - result of sums");
-            Console.WriteLine("----------------------");
-            Console.WriteLine("3 - to subtraction");
-            Console.WriteLine("4 - result of subtraction");
-            Console.WriteLine("----------------------");
-            Console.WriteLine("5 - to multiplication");
-            Console.WriteLine("6 - result of multiplication");
-            Console.WriteLine("----------------------");
-            Console.WriteLine("7 - to division");
-            Console.WriteLine("8 - result of division");
-            Console.WriteLine("----------------------");
-            Console.WriteLine("0 - exit");
+            Console.Clear();
+
+            Console.WriteLine("=========== CALCULATOR ===========");
+            Console.WriteLine();
+
+            Console.WriteLine("Select an option:");
+            Console.WriteLine("-----------------------------------");
+
+            Console.WriteLine(" 1 - Addition");
+            Console.WriteLine(" 2 - Addition history");
+
+            Console.WriteLine(" 3 - Subtraction");
+            Console.WriteLine(" 4 - Subtraction history");
+
+            Console.WriteLine(" 5 - Multiplication");
+            Console.WriteLine(" 6 - Multiplication history");
+
+            Console.WriteLine(" 7 - Division");
+            Console.WriteLine(" 8 - Division history");
+
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine(" 0 - Exit");
             Console.WriteLine();
         }
 
-        public static int Somar(int a, int b)
-        {
-            // valicação caso fosse implementar. mas o número é randomico...
-            //if(a <= 0 || b <= 0)
-            //{
-            //    Console.WriteLine("Os números tem que ser MAIOR que 0");
-            //    return 0;
-            //}
-
-            return a + b;
-        }
-
-        public static int Subtrait(int a, int b)
-        {
-            // valicação caso fosse implementar. mas o número é randomico..
-            //if (a <= 0 || b <= 0)
-            //{
-            //    Console.WriteLine("Os números tem que ser MAIOR que 0");
-            //    return 0;
-            //}
-
-            return a - b;
-        }
-
-        public static int Multiplicar(int a, int b)
-        {
-            // valicação caso fosse implementar. mas o número é randomico..
-            //if (a <= 0 || b <= 0)
-            //{
-            //    Console.WriteLine("Os números tem que ser MAIOR que 0");
-            //    return 0;
-            //}
-            return a * b;
-        }
-
-        public static int Dividir(int a, int b)
-        {
-            // valicação caso fosse implementar. mas o número é randomico..
-            //if (a <= 0 || b <= 0)
-            //{
-            //    Console.WriteLine("Os números tem que ser MAIOR que 0");
-            //    return 0;
-            //}
-            return a / b;
-        }
-        //por exemplo, quero que a função de soma seja com número aleatório. mas questão é que ela vai de fato somar, mas preciso desse valor retornado..
-        //como posso pegar dois números aletórios e somar eles e depois retornar o resultado?
-
+        
     }
 }
