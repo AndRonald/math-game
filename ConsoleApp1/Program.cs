@@ -27,26 +27,26 @@ namespace ConsoleApp1
                         break;
 
                     case 2:
-                        ResultModel.ShowResult(sum);
+                        ShowResult(sum);
                         break;
 
                     case 3:
                         Quiz.QuizSubtraction(subtraction);
                         break;
                     case 4:
-                        ResultModel.ShowResult(subtraction);
+                        ShowResult(subtraction);
                         break;
                     case 5:
                         Quiz.QuizMultiplication(multiplication);
                         break;
                     case 6:
-                        ResultModel.ShowResult(multiplication);
+                        ShowResult(multiplication);
                         break;
                     case 7:
                         Quiz.QuizDivision(division);
                         break;
                     case 8:
-                        ResultModel.ShowResult(division);
+                        ShowResult(division);
                         break;
                     default:
                         if (validationExit != 0)
@@ -82,6 +82,18 @@ namespace ConsoleApp1
             Console.WriteLine();
         }
 
+        public static void ShowResult(ResultModel model)
+        {
+            if (model.ListOfAnswers.Count == 0)
+                Console.WriteLine("Não há registros");
+            else
+            {
+                for (int i = 0; i < model.ListOfAnswers.Count; i++)
+                {
+                    Console.WriteLine($"{i + 1}º: {model.ListOfAnswers[i]}");
+                }
+            }
+        }
         
     }
 }
